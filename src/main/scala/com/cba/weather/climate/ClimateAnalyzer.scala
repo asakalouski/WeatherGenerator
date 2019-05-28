@@ -4,8 +4,8 @@ import java.time.LocalDateTime
 
 import com.cba.weather.data.Climate._
 import com.cba.weather.data.Season._
-import com.cba.weather.data.{Climate, Location, Season, WeatherCondition}
-import WeatherCondition._
+import com.cba.weather.data.{Climate, Location, Season, Condition}
+import Condition._
 import ElevationCalculator._
 
 import scala.math.abs
@@ -80,7 +80,7 @@ object ClimateAnalyzer {
   ) yield (temperature - elevationAdjust)
 
   def approximateCondition(location: Location, time: LocalDateTime)
-                          (implicit generator: UniformGenerator, normalGenerator: NormalGenerator): Option[WeatherCondition] = for (
+                          (implicit generator: UniformGenerator, normalGenerator: NormalGenerator): Option[Condition] = for (
     days <- averageRainyDays(location, time);
     temp <- approximateTemperature(location, time)
   ) yield (if (generator.nextInt(31) > days) Sunny else if (temp < 0) Snow else Rain)

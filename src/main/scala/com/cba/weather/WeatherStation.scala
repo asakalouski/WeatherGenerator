@@ -6,7 +6,7 @@ import java.util.UUID
 import akka.actor.{Actor, ActorRef}
 import com.cba.weather.WeatherControlTower.CollectWeatherDataEvent
 import com.cba.weather.climate.ClimateAnalyzer._
-import com.cba.weather.data.{EventData, Location, Position, WeatherEvent}
+import com.cba.weather.data.{EventData, Location, Position, Event}
 import com.cba.weather.climate.ElevationCalculator._
 
 class WeatherStation(val location: Location, localTime: LocalDateTime = LocalDateTime.now())
@@ -24,7 +24,7 @@ class WeatherStation(val location: Location, localTime: LocalDateTime = LocalDat
         pressure <- pressure(location);
         humidity <- humidity(location, time);
         temp <- temperatureWithElevationAdjust(location, time)
-      ) yield (eventsAggregator ! WeatherEvent(stationId = stationId, eventData = EventData(label = location.label,
+      ) yield (eventsAggregator ! Event(stationId = stationId, eventData = EventData(label = location.label,
         position = Position(location.latitude, location.longitude, elevation),
         time = time,
         temperature = temp,

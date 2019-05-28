@@ -7,7 +7,7 @@ import org.scalatest.FlatSpec
 import com.cba.weather.climate.ClimateAnalyzer._
 import com.cba.weather.data.Climate.{Polar, SubTropical, Temperate}
 import com.cba.weather.data.Season.{Autumn, Spring, Summer, Winter}
-import com.cba.weather.data.WeatherCondition.{Rain, Snow, Sunny}
+import com.cba.weather.data.Condition.{Rain, Snow, Sunny}
 
 class ClimateAnalyzerTest extends FlatSpec {
 
