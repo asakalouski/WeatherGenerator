@@ -2,18 +2,19 @@
 * [Prerequisites](#prerequisites)
 * [Overview](#overview)
 * [Running the App](#running-the-app)
-   * [Simulation] (#simulation)
+   * [Simulation](#simulation)
    * [Testing](#testing)
 
 ## Prerequisites
+Running application requires [SBT](https://www.scala-sbt.org/). The latest version will do.
 ## Overview
 ![Screenshot](diagram.png)
 ## Running the App
 ### Simulation
 ```
-sbt run
+sbt clean run
 ```
 ### Testing
 ```
-sbt test
+sbt clean test
 ```
