@@ -10,8 +10,8 @@ import scala.concurrent.duration._
 import scala.util.Random
 
 
-class WeatherControlTower(stationsBuilder:(ActorContext) => List[ActorRef], randomGenerator: () => Boolean = WeatherControlTower.defaultRandomBooleanGenerator) extends Actor with Timers {
-  import WeatherControlTower.{CollectWeatherDataEvent, SignalGeneratorKey, TickEvent}
+class ControlTower(stationsBuilder:(ActorContext) => List[ActorRef], randomGenerator: () => Boolean = ControlTower.defaultRandomBooleanGenerator) extends Actor with Timers {
+  import ControlTower.{CollectWeatherDataEvent, SignalGeneratorKey, TickEvent}
 
   timers.startPeriodicTimer(SignalGeneratorKey, TickEvent, 1.second)
 
@@ -24,7 +24,7 @@ class WeatherControlTower(stationsBuilder:(ActorContext) => List[ActorRef], rand
   }
 }
 
-object WeatherControlTower extends App {
+object ControlTower extends App {
 
   val defaultRandomBooleanGenerator = () => Random.nextBoolean()
 
@@ -35,12 +35,12 @@ object WeatherControlTower extends App {
   val system = ActorSystem("WeatherGenerator")
 
   val stationsBuilder = (context: ActorContext) => {
-    implicit val eventsAggregator = context.actorOf(Props(new WeatherDataAggregator(printEventsToConsole)), "EventDataAggregator")
-    Locations.map({case (loc, time) => context.actorOf(Props(new WeatherStation(location = loc, localTime = time)),
+    implicit val eventsAggregator = context.actorOf(Props(new EventAggregator(printEventsToConsole)), "EventDataAggregator")
+    Locations.map({case (loc, time) => context.actorOf(Props(new Station(location = loc, localTime = time)),
       name = s"${loc.label.replaceAll("\\s", "-")}-${UUID.randomUUID()}")})
   }
 
-  val controlTower: ActorRef = system.actorOf(Props(new WeatherControlTower(stationsBuilder)), "ControlTower")
+  val controlTower: ActorRef = system.actorOf(Props(new ControlTower(stationsBuilder)), "ControlTower")
 
   sys.ShutdownHookThread {
     system.stop(controlTower)

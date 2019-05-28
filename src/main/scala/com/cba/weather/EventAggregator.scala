@@ -3,7 +3,7 @@ package com.cba.weather
 import akka.actor.Actor
 import com.cba.weather.data.{EventData, Event}
 
-class WeatherDataAggregator(output:(Iterable[EventData]) => Unit) extends Actor {
+class EventAggregator(output:(Iterable[EventData]) => Unit) extends Actor {
 
   var events:Map[String, EventData] = Map[String, EventData]()
 

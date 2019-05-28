@@ -19,6 +19,7 @@ object MonitoredLocations {
     (Location(label = "Tokyo", latitude = 35.652832, longitude = 139.8394), LocalDateTime.of(2012, 12, 18, 1, 0)),
     (Location(label = "Shenzhen", latitude = 22.54554, longitude = 114.0683), LocalDateTime.of(2011, 11, 13, 1, 0)),
     (Location(label = "Naples", latitude = 40.85631, longitude = 14.24641), LocalDateTime.of(2005, 1, 8, 1, 0)),
-    (Location(label = "Caracas", latitude = 10.500, longitude = -66.9166), LocalDateTime.of(1983, 2, 20, 1, 0))
+    (Location(label = "Caracas", latitude = 10.500, longitude = -66.9166), LocalDateTime.of(1983, 2, 20, 1, 0)),
+    (Location(label = "Oslo", latitude = 59.911491, longitude = 10.757933), LocalDateTime.of(2018, 1, 20, 1, 0))
   )
 }

@@ -52,8 +52,8 @@ object ClimateAnalyzer {
     * if snow or rain then
     * 6°C per 1,000 meters
     *
-    * @param location geographic location
-    * @param time     time of the year
+    * @param location geographic location (latitude, longitude)
+    * @param time date and time of the year
     * @return temperature decrease in degrees
     */
   private[climate] def elevationAdjust(location: Location, time: LocalDateTime)
@@ -62,6 +62,13 @@ object ClimateAnalyzer {
     condition <- approximateCondition(location, time)
   ) yield elevation.doubleValue() / 1000 * (if (condition == Sunny) -9.8 else -6)
 
+  /**
+    * Approximate temperature for given location and time with some random component. Temperature has normal distribution.
+    * @param location geographic location (latitude, longitude)
+    * @param time date and time of the year
+    * @param normalGenerator
+    * @return
+    */
   private[climate] def approximateTemperature(location: Location, time: LocalDateTime)
                                              (implicit normalGenerator: NormalGenerator): Option[Double] =
     climateByLocation(location)
@@ -79,6 +86,7 @@ object ClimateAnalyzer {
     temperature <- approximateTemperature(location, time)
   ) yield (temperature - elevationAdjust)
 
+
   def approximateCondition(location: Location, time: LocalDateTime)
                           (implicit generator: UniformGenerator, normalGenerator: NormalGenerator): Option[Condition] = for (
     days <- averageRainyDays(location, time);
@@ -88,15 +96,17 @@ object ClimateAnalyzer {
   /**
     * Calculates atmospheric pressure using "Barometric Formula"
     *
-    * @param location geo location
+    * @param location geographic location (latitude, longitude)
     * @return pressure in kPa
     */
   def pressure(location: Location)(implicit normalGenerator: NormalGenerator): Option[Double] =
     approximateElevation(location).map(h => (1013.25 + normalGenerator.nextGaussian() * 150) * exp(-0.00012 * h))
 
   /**
+    * Calculates humidity, firstly determines weather condition at given time and if it's "Rain" returns 100%, uses normally
+    * distributed random value otherwise
     *
-    * @param location
+    * @param location geographic location (latitude, longitude)
     * @param time
     * @param generator
     * @param normalGenerator
@@ -114,7 +124,7 @@ object ClimateAnalyzer {
   /**
     * Randomly increments days, hour and minutes of passed time object
     * @param time local date time object
-    * @param generator random generator
+    * @param generator random generator with uniform distribution
     * @return
     */
   def randomTimeIncrement(time: LocalDateTime)(implicit generator: UniformGenerator): LocalDateTime =

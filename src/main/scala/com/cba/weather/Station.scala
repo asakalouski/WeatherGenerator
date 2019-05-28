@@ -4,13 +4,13 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 import akka.actor.{Actor, ActorRef}
-import com.cba.weather.WeatherControlTower.CollectWeatherDataEvent
+import com.cba.weather.ControlTower.CollectWeatherDataEvent
 import com.cba.weather.climate.ClimateAnalyzer._
 import com.cba.weather.data.{EventData, Location, Position, Event}
 import com.cba.weather.climate.ElevationCalculator._
 
-class WeatherStation(val location: Location, localTime: LocalDateTime = LocalDateTime.now())
-                    (implicit eventsAggregator: ActorRef) extends Actor {
+class Station(val location: Location, localTime: LocalDateTime = LocalDateTime.now())
+             (implicit eventsAggregator: ActorRef) extends Actor {
 
   val stationId = UUID.randomUUID().toString
   var time = localTime
