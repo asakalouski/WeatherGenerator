@@ -28,12 +28,12 @@ computes an approximate elevation by firstly mapping geographic location to the 
 **Climate Analyzer** 
 is the "brain" of the application that generates the following weather measures 
 
-    1. Time is constantly incremented with the uniform random generator. 
-    2. Season determined by location and time. Northern and Southern hemispheres have opposite seasons.
-    3. Temperature is an approximation for given location and time with some random component with a normal distribution. Temperature depends on climate and season at location and it is adjusted for elevation so it decreases by 9.8°C degrees for every 1000 meters if the weather condition is "Sunny".  If it snows or rains then it decreases 6°C degrees per 1000 meters.
-    4. Condition depends on climate and season at the location and also temperature. If the temperature is below zero then it snows otherwise rains.
-    5. Pressure is calculated using "Barometric Formula". Elevation is determined from the location, average sea level pressure is a random number with normal distribution.
-    6. Humidity depends on weather condition at a given time and if the condition is "Rain" then it's 100%, otherwise, it's a random number with normal distribution based on climate and season
+    * Time is constantly incremented with the uniform random generator. 
+    * Season determined by location and time. Northern and Southern hemispheres have opposite seasons.
+    * Temperature is an approximation for given location and time with some random component with a normal distribution. Temperature depends on climate and season at location and it is adjusted for elevation so it decreases by 9.8°C degrees for every 1000 meters if the weather condition is "Sunny".  If it snows or rains then it decreases 6°C degrees per 1000 meters.
+    * Condition depends on climate and season at the location and also temperature. If the temperature is below zero then it snows otherwise rains.
+    * Pressure is calculated using "Barometric Formula". Elevation is determined from the location, average sea level pressure is a random number with normal distribution.
+    * Humidity depends on weather condition at a given time and if the condition is "Rain" then it's 100%, otherwise, it's a random number with normal distribution based on climate and season
 
 
 ## Running the App
