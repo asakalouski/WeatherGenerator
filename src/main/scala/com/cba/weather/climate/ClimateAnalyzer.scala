@@ -21,6 +21,12 @@ object ClimateAnalyzer {
 
   private[this] val Seasons = List(Winter, Winter, Spring, Spring, Spring, Summer, Summer, Summer, Autumn, Autumn, Autumn, Winter)
 
+  /**
+    * Season for location and time. Northern and Southern hemispheres have opposite seasons
+    * @param location
+    * @param time
+    * @return
+    */
   private[climate] def seasonForLocationAndTime(location: Location, time: LocalDateTime): Season =
     if (location.latitude >= 0) Seasons(time.getMonthValue - 1)
     else (Seasons ::: Seasons) (time.getMonthValue + 5)
@@ -87,6 +93,14 @@ object ClimateAnalyzer {
   ) yield (temperature - elevationAdjust)
 
 
+  /**
+    * Condition by location and time. If temperature is below zero then it snows otherwise rains.
+    * @param location
+    * @param time
+    * @param generator
+    * @param normalGenerator
+    * @return
+    */
   def approximateCondition(location: Location, time: LocalDateTime)
                           (implicit generator: UniformGenerator, normalGenerator: NormalGenerator): Option[Condition] = for (
     days <- averageRainyDays(location, time);

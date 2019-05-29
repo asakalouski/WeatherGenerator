@@ -33,9 +33,9 @@ object ElevationCalculator {
     }).toOption
 
   /**
-    * Calculates approximate elevation, maps geographic location to the point at NASA gebco.png image.
-    * Then calculates Euclidean distance between the point RGB colour components and pure white colour (255, 255, 255)
-    * the highest point on Earth (8848m). Having Euclidean distance calculates elevation using a simple proportion.
+    * Computes an approximate elevation by firstly mapping geographic location to the point at NASA gebco.png image,
+    * then calculating Euclidean distance between the point RGB colour components and pure white colour (255, 255, 255)
+    * which is the highest point on Earth (8848m). Having Euclidean distance makes it easy to find an elevation by using a simple proportion.
     *
     * @param location geographic location (latitude, longitude). The values are bounded by ±90° and ±180° respectively.
     * @return approximate elevation in meters
