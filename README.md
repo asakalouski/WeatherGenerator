@@ -13,27 +13,29 @@ Running application requires [SBT](https://www.scala-sbt.org/). The latest versi
 The application is a toy simulator for the weather environment which evolves over time. It consists of the central component "Control Tower" which on timer interval sends messages to "Weather Stations" and instructs them to collect the various measurements such as temperature, pressure, humidity and general weather conditions. After that, each station packs data into the event body and notifies "Event Aggregator" component which aggregates events/message from multiple stations and displays continuously updated results on the console. Messaging and concurrency implemented with the help of Akka and thus each of the main components is a separate Akka actor.
 
 ## Main Components
-**Control Tower**
+
+### Control Tower
 It creates a separate weather station for each of the provided geo-location which require generating of the weather data. The component is an Akka actor that receives "TickEvent" event from the timer every second. On every event, it signals weather stations (via CollectWeatherDataEvent) with 50% probability instructing them to collect weather metrics.
 
-**Weather Station**
+### Weather Station
 is an Akka actor which process "CollectWeatherDataEvent" events it passes location and time objects to "Climate Analyzer" in order to generate various weather measurements. Then it packages data into the message and sends it to "Event Aggregator".
 
-**Event Aggregator**
+### Event Aggregator
 is the component which receives and processes data from multiple stations and sends the result to the console so it can be viewed by the user. 
 
-**Elevation Calculator**
+### Elevation Calculator
 computes an approximate elevation by firstly mapping geographic location to the point at NASA gebco.png image, then calculating Euclidean distance between the point RGB colour components and pure white colour (255, 255, 255)  which is the highest point on Earth (8848m). Having Euclidean distance makes it easy to find an elevation by using a simple proportion.
 
-**Climate Analyzer** 
-is the "brain" of the application that generates the following weather measures 
+### Climate Analyzer
+ 
+It is the "brain" of the application that generates the following weather measures 
 
-    1. Time is constantly incremented with the uniform random generator. 
-    2. Season determined by location and time. Northern and Southern hemispheres have opposite seasons.
-    3. Temperature is an approximation for given location and time with some random component with a normal distribution. Temperature depends on climate and season at location and it is adjusted for elevation so it decreases by 9.8°C degrees for every 1000 meters if the weather condition is "Sunny".  If it snows or rains then it decreases 6°C degrees per 1000 meters.
-    4. Condition depends on climate and season at the location and also temperature. If the temperature is below zero then it snows otherwise rains.
-    5. Pressure is calculated using "Barometric Formula". Elevation is determined from the location, average sea level pressure is a random number with normal distribution.
-    6. Humidity depends on weather condition at a given time and if the condition is "Rain" then it's 100%, otherwise, it's a random number with normal distribution based on climate and season
+    1. **Time** is constantly incremented with the uniform random generator. 
+    2. **Season** determined by location and time. Northern and Southern hemispheres have opposite seasons.
+    3. **Temperature** is an approximation for given location and time with some random component with a normal distribution. Temperature depends on climate and season at location and it is adjusted for elevation so it decreases by 9.8°C degrees for every 1000 meters if the weather condition is "Sunny".  If it snows or rains then it decreases 6°C degrees per 1000 meters.
+    4. **Condition** depends on climate and season at the location and also temperature. If the temperature is below zero then it snows otherwise rains.
+    5. **Pressure** is calculated using "Barometric Formula". Elevation is determined from the location, average sea level pressure is a random number with normal distribution.
+    6. **Humidity** depends on weather condition at a given time and if the condition is "Rain" then it's 100%, otherwise, it's a random number with normal distribution based on climate and season
 
 
 ## Running the App
