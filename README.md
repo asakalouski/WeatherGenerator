@@ -1,9 +1,9 @@
 # Table of Contents
 * [Prerequisites](#prerequisites)
 * [Overview](#overview)
-* [Main Components](#maincomponents)
+* [Main Components](#main-components)
 * [Running the App](#running-the-app)
-* [Running Tests](#testing)
+* [Running Tests](#running-tests)
 
 ## Prerequisites
 Running application requires [SBT](https://www.scala-sbt.org/). The latest version will do.
@@ -14,33 +14,27 @@ The application is a toy simulator for the weather environment which evolves ove
 
 ## Main Components
 
-### Control Tower
-It creates a separate weather station for each of the provided geo-location which require generating of the weather data. The component is an Akka actor that receives "TickEvent" event from the timer every second. On every event, it signals weather stations (via CollectWeatherDataEvent) with 50% probability instructing them to collect weather metrics.
+**"Control Tower"** It creates a separate weather station for each of the provided geo-location which require generating of the weather data. The component is an Akka actor that receives "TickEvent" event from the timer every second. On every event, it signals weather stations (via CollectWeatherDataEvent) with 50% probability instructing them to collect weather metrics.
 
-### Weather Station
-is an Akka actor which process "CollectWeatherDataEvent" events it passes location and time objects to "Climate Analyzer" in order to generate various weather measurements. Then it packages data into the message and sends it to "Event Aggregator".
+**"Weather Station"** is an Akka actor which process "CollectWeatherDataEvent" events it passes location and time objects to "Climate Analyzer" in order to generate various weather measurements. Then it packages data into the message and sends it to "Event Aggregator".
 
-### Event Aggregator
-is the component which receives and processes data from multiple stations and sends the result to the console so it can be viewed by the user. 
+**"Event Aggregator"** is the component which receives and processes data from multiple stations and sends the result to the console so it can be viewed by the user. 
 
-### Elevation Calculator
-computes an approximate elevation by firstly mapping geographic location to the point at NASA gebco.png image, then calculating Euclidean distance between the point RGB colour components and pure white colour (255, 255, 255)  which is the highest point on Earth (8848m). Having Euclidean distance makes it easy to find an elevation by using a simple proportion.
+**"Elevation Calculator"** computes an approximate elevation by firstly mapping geographic location to the point at NASA gebco.png image, then calculating Euclidean distance between the point RGB colour components and pure white colour (255, 255, 255)  which is the highest point on Earth (8848m). Having Euclidean distance makes it easy to find an elevation by using a simple proportion.
 
-### Climate Analyzer
- 
-It is the "brain" of the application that generates the following weather measures 
+**"Climate Analyzer"** It is the "brain" of the application that generates the following weather measures 
 
-**Time** is constantly incremented with the uniform random generator. 
+* *Time* is constantly incremented with the uniform random generator. 
 
-**Season** determined by location and time. Northern and Southern hemispheres have opposite seasons.
+* *Season* determined by location and time. Northern and Southern hemispheres have opposite seasons.
 
-**Temperature** is an approximation for given location and time with some random component with a normal distribution. Temperature depends on climate and season at location and it is adjusted for elevation so it decreases by 9.8°C degrees for every 1000 meters if the weather condition is "Sunny".  If it snows or rains then it decreases 6°C degrees per 1000 meters.
+* *Temperature* is an approximation for given location and time with some random component with a normal distribution. Temperature depends on climate and season at location and it is adjusted for elevation so it decreases by 9.8°C degrees for every 1000 meters if the weather condition is "Sunny".  If it snows or rains then it decreases 6°C degrees per 1000 meters.
 
-**Condition** depends on climate and season at the location and also temperature. If the temperature is below zero then it snows otherwise rains.
+* *Condition* depends on climate and season at the location and also temperature. If the temperature is below zero then it snows otherwise rains.
 
-**Pressure** is calculated using "Barometric Formula". Elevation is determined from the location, average sea level pressure is a random number with normal distribution.
+* *Pressure* is calculated using "Barometric Formula". Elevation is determined from the location, average sea level pressure is a random number with normal distribution.
 
-**Humidity** depends on weather condition at a given time and if the condition is "Rain" then it's 100%, otherwise, it's a random number with normal distribution based on climate and season
+* *Humidity* depends on weather condition at a given time and if the condition is "Rain" then it's 100%, otherwise, it's a random number with normal distribution based on climate and season
 
 
 ## Running the App
@@ -67,7 +61,7 @@ Berlin|52.52,13.404,34|2010-12-02 20:08:00|Sunny|0.95|1027.49|104.65
 [info] Sydney|-33.920019,150.924127,0|2019-10-17 13:21:00|Rain|24.84|1154.70|55.96
 ``` 
 
-### Testing
+### Running Tests
 ```
 sbt clean test
 ```
